@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MathParser
 {
-    class RPNParser : Parser
+    public class RPNParser : Parser
     {
         public RPNParser() { }
+        protected override string FormatString(string expression) {
+            string formatExpression = base.FormatString(expression);
+            return ConvertToRPN(formatExpression);
+        }
 
         private string ConvertToRPN(string expression)
         {
@@ -87,7 +92,7 @@ namespace MathParser
                 }
                 else
                 {
-                    throw new ArgumentException("Unknown token");
+                    throw new ArgumentException("Unknown token " + token);
                 }
 
             }
@@ -116,7 +121,7 @@ namespace MathParser
                     && expression[pos] == decimalSeparator)
                 {
                     // Add current system specific decimal separator
-                    token.Append(decimalSeparator);
+                    token.Append(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
                     while (++pos < expression.Length
                     && Char.IsDigit(expression[pos]))
@@ -152,7 +157,7 @@ namespace MathParser
             }
             else
             {
-                throw new ArgumentException("Unknown token in expression");
+                throw new ArgumentException("Unknown token " + token + " in expression " + expression);
             }
         }
 
@@ -221,15 +226,13 @@ namespace MathParser
 
         protected override double Calculate(string expression)
         {
-            string RPNexpression = ConvertToRPN(expression);
-
             int pos = 0; // Current position of lexical analysis
             var stack = new Stack<double>(); // Contains operands
 
             // Analyse entire expression
-            while (pos < RPNexpression.Length)
+            while (pos < expression.Length)
             {
-                string token = LexicalAnalysisRPN(RPNexpression, ref pos);
+                string token = LexicalAnalysisRPN(expression, ref pos);
 
                 stack = SyntaxAnalysisRPN(stack, token);
             }
@@ -295,7 +298,7 @@ namespace MathParser
                         rst = Math.Tan(arg);
                         break;
                     case Ctg:
-                        rst = 1 /Math.Tan(arg);
+                        rst = 1 / Math.Tan(arg);
                         break;
                     case Ln:
                         rst = Math.Log(arg);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MathParser
 {
-    class Parser
+    public class Parser
     {
 
         //Markers
@@ -70,21 +70,11 @@ namespace MathParser
                 {"e", NumberMaker + Math.E.ToString() }
         };
 
-        protected readonly char decimalSeparator;
+        protected char decimalSeparator ='.';
 
-        public Parser()
-        {
-            try
-            {
-                decimalSeparator = Char.Parse(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-            }
-            catch (FormatException ex)
-            {
-                throw new FormatException("Error: can't read char decimal separator from system, check your regional settings.", ex);
-            }
-        }
+        public Parser(){}
 
-        protected string FormatString(string expression)
+        protected virtual string FormatString(string expression)
         {
             if (string.IsNullOrEmpty(expression))
             {
@@ -197,7 +187,7 @@ namespace MathParser
                 case Abs:
                     return 10;
                 default:
-                    throw new ArgumentException("Unknown operator");
+                    throw new ArgumentException("Unknown operator " + token);
             }
         }
 
@@ -224,7 +214,7 @@ namespace MathParser
                 case Log:
                     return 2;
                 default:
-                    throw new ArgumentException("Unknown operator");
+                    throw new ArgumentException("Unknown operator " + token);
             }
         }
     }
