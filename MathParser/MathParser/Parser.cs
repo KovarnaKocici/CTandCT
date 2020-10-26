@@ -67,14 +67,15 @@ namespace MathParser
         new Dictionary<string, string>
         {
                 {"pi", NumberMaker +  Math.PI.ToString() },
-                {"e", NumberMaker + Math.E.ToString() }
+                {"e", NumberMaker + Math.E.ToString() },
+                {"x", NumberMaker + "x" }
         };
 
         protected char decimalSeparator ='.';
 
         public Parser(){}
 
-        protected virtual string FormatString(string expression)
+        public virtual string FormatString(string expression)
         {
             if (string.IsNullOrEmpty(expression))
             {
@@ -121,7 +122,7 @@ namespace MathParser
             return formattedString.ToString();
         }
 
-        protected virtual double Calculate(string expression)
+        public virtual double Calculate(string expression)
         {
            return 0;
         }

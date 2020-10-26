@@ -10,7 +10,7 @@ namespace MathParser
     public class RPNParser : Parser
     {
         public RPNParser() { }
-        protected override string FormatString(string expression) {
+        public override string FormatString(string expression) {
             string formatExpression = base.FormatString(expression);
             return ConvertToRPN(formatExpression);
         }
@@ -224,7 +224,7 @@ namespace MathParser
             return token == Degree;
         }
 
-        protected override double Calculate(string expression)
+        public override double Calculate(string expression)
         {
             int pos = 0; // Current position of lexical analysis
             var stack = new Stack<double>(); // Contains operands

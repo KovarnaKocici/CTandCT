@@ -21,6 +21,7 @@ namespace MathParserTests
             var actual = (string)mathParser.Invoke("FormatString", string.Empty);
 
             // Assert
+            Assert.AreEqual("", actual);
         }
 
         [TestMethod]
